@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="La mochila interactiva del jardín: recomendaciones ante contingencias, juegos, canciones y actividades no presenciales." />
+    <meta name="theme-color" content="#bfe6ff" />
+    <title>Nuestro Jardín</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/navegacion.css" />
+    <link rel="stylesheet" href="css/inicio.css" />
+    <link rel="stylesheet" href="css/recomendaciones.css" />
+    <link rel="stylesheet" href="css/tarjetas.css" />
+  </head>
+  <body>
+    <a class="saltar" href="#principal">Saltar al contenido</a>
+
+    <!-- Cielo decorativo: nubes y estrellitas -->
+    <div class="cielo" aria-hidden="true">
+      <span class="cielo__nube cielo__nube--1"></span>
+      <span class="cielo__nube cielo__nube--2"></span>
+      <span class="cielo__nube cielo__nube--3"></span>
+      <span class="cielo__brillo cielo__brillo--1"></span>
+      <span class="cielo__brillo cielo__brillo--2"></span>
+      <span class="cielo__brillo cielo__brillo--3"></span>
+      <span class="cielo__brillo cielo__brillo--4"></span>
+    </div>
+
+    <main id="principal" class="principal" tabindex="-1"></main>
+
+    <footer class="pie">
+      <p>Hecho con cariño para aprender jugando.</p>
+    </footer>
+
+    <noscript>
+      <p class="sin-js">Para jugar y ver las actividades, activá JavaScript en tu navegador.</p>
+    </noscript>
+
+    <!-- 1. Configuración (nombre del jardín y enlaces) -->
+    <script src="js/config.js"></script>
+    <!-- 2. Datos e ilustraciones -->
+    <script src="js/datos/elementos-mochila.js"></script>
+    <script src="js/datos/recomendaciones.js"></script>
+    <script src="js/datos/audios.js"></script>
+    <script src="js/frases.js"></script>
+    <script src="js/ilustraciones.js"></script>
+    <script src="js/voz.js"></script>
+    <!-- 3. Componentes -->
+    <script src="js/componentes/aviso.js"></script>
+    <script src="js/componentes/navegacion.js"></script>
+    <script src="js/componentes/elemento-mochila.js"></script>
+    <script src="js/componentes/tarjetas.js"></script>
+    <!-- 4. Secciones -->
+    <script src="js/secciones/inicio.js"></script>
+    <script src="js/secciones/recomendaciones.js"></script>
+    <script src="js/secciones/actividades.js"></script>
+    <!-- 5. Arranque -->
+    <script src="js/app.js"></script>
+  </body>
+</html>

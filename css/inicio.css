@@ -1,0 +1,273 @@
+/* ==========================================================
+   INICIO: LA MOCHILA INTERACTIVA
+   ========================================================== */
+
+.inicio__portada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.inicio__titulo {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  text-shadow: 0 4px 0 var(--blanco), 0 0 24px rgba(255, 255, 255, 0.9);
+}
+
+.inicio__titulo:focus {
+  outline: none;
+}
+
+.inicio__lema {
+  margin-top: 10px;
+  padding: 6px 20px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  font-weight: 800;
+  color: var(--tinta-suave);
+}
+
+/* ---------------- El tablero de la mochila ---------------- */
+
+.hub {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, max(640px, calc((100vh - 270px) * 1.6)));
+  width: min(100%, max(640px, calc((100svh - 270px) * 1.6)));
+  aspect-ratio: 1.6;
+  margin: 20px auto 0;
+  border-radius: 56px;
+  border: 6px solid var(--blanco);
+  background:
+    radial-gradient(ellipse 26% 40% at 50% 60%, rgba(255, 255, 255, 0.9) 0 60%, transparent 100%),
+    radial-gradient(rgba(255, 255, 255, 0.6) 2px, transparent 2.5px) 0 0 / 26px 26px,
+    linear-gradient(165deg, #d8f3ea, #e3f3ff 55%, #fdeaf1);
+  box-shadow: var(--sombra);
+}
+
+/* Tiritas punteadas que unen la mochila con cada botón */
+.hub__tiras {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hub__tiras path {
+  fill: none;
+  stroke: var(--blanco);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 1 13;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Arcoíris detrás de la mochila */
+.hub__arco {
+  --g: 2.6cqi;
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  width: 52cqi;
+  aspect-ratio: 2 / 1;
+  translate: -50% 0;
+}
+
+.hub__arco span {
+  position: absolute;
+  bottom: 0;
+  border: var(--g) solid;
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+  animation: arco-crece 0.9s var(--rebote) both;
+}
+
+.hub__arco span:nth-child(1) { inset: 0 0 0 0; border-color: #ffb3c4; }
+.hub__arco span:nth-child(2) { inset: var(--g) var(--g) 0; border-color: #ffcf9e; animation-delay: 0.08s; }
+.hub__arco span:nth-child(3) { inset: calc(var(--g) * 2) calc(var(--g) * 2) 0; border-color: #fff0a0; animation-delay: 0.16s; }
+.hub__arco span:nth-child(4) { inset: calc(var(--g) * 3) calc(var(--g) * 3) 0; border-color: #b7efd9; animation-delay: 0.24s; }
+.hub__arco span:nth-child(5) { inset: calc(var(--g) * 4) calc(var(--g) * 4) 0; border-color: #b9e3ff; animation-delay: 0.32s; }
+
+@keyframes arco-crece {
+  from { opacity: 0; transform: scale(0.6) translateY(30%); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Globo de la mochila */
+.hub__globo {
+  position: absolute;
+  left: 50%;
+  top: 3%;
+  width: max-content;
+  max-width: 48cqi;
+  padding: 0.45em 1.1em;
+  border-radius: 999px;
+  background: var(--blanco);
+  box-shadow: var(--sombra-chica);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(15px, 1.9cqi, 22px);
+  line-height: 1.15;
+  text-align: center;
+  translate: -50% 0;
+}
+
+/* La mochila (se puede tocar para que salude) */
+.hub__mochila {
+  position: absolute;
+  left: 50%;
+  top: 59%;
+  width: 29cqi;
+  padding: 0;
+  border: 0;
+  border-radius: 40px;
+  background: none;
+  cursor: pointer;
+  translate: -50% -50%;
+  filter: drop-shadow(0 14px 12px rgba(61, 52, 102, 0.16));
+  animation: respira 3.4s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hub__mochila--saluda {
+  animation: salta 0.9s var(--rebote);
+}
+
+.hub__mochila .mochila-boca {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.hub__mochila:hover .mochila-boca,
+.hub__mochila--saluda .mochila-boca,
+.hub:has(.hub__boton:hover, .hub__boton:focus-visible) .mochila-boca {
+  opacity: 1;
+}
+
+.hub__mochila:hover .mochila-sonrisa,
+.hub__mochila--saluda .mochila-sonrisa,
+.hub:has(.hub__boton:hover, .hub__boton:focus-visible) .mochila-sonrisa {
+  opacity: 0;
+}
+
+/* Los cuatro botones */
+.hub__boton {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 29cqi;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2cqi;
+  border-radius: 30px;
+  text-decoration: none;
+  translate: -50% -50%;
+  animation: boton-aparece 0.7s var(--rebote) both;
+  animation-delay: calc(0.25s + var(--orden) * 0.1s);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes boton-aparece {
+  from { opacity: 0; transform: scale(0.4); }
+}
+
+.hub__circulo {
+  display: block;
+  width: 17cqi;
+  aspect-ratio: 1;
+  padding: 2.4cqi;
+  border-radius: 50%;
+  border: max(5px, 0.7cqi) solid var(--blanco);
+  background: var(--c-fondo);
+  box-shadow: 0 6px 0 var(--c-oscuro), 0 14px 24px rgba(61, 52, 102, 0.16);
+  transition: transform 0.3s var(--rebote);
+}
+
+.hub__circulo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hub__etiqueta {
+  padding: 0.3em 0.9em;
+  border-radius: 22px;
+  background: var(--c-fuerte);
+  box-shadow: 0 4px 0 var(--c-oscuro);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(15px, 2.1cqi, 24px);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.hub__boton:hover .hub__circulo,
+.hub__boton:focus-visible .hub__circulo {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.hub__boton:hover .hub__circulo svg {
+  animation: menea 0.6s ease-in-out;
+}
+
+.hub__boton:active .hub__circulo {
+  transform: scale(0.95);
+}
+
+@keyframes menea {
+  25% { transform: rotate(-6deg); }
+  75% { transform: rotate(6deg); }
+}
+
+/* ---------------- Celulares: mochila arriba y botones de a dos ---------------- */
+
+@media (max-width: 699px) {
+  .hub {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 10px;
+    width: 100%;
+    aspect-ratio: auto;
+    padding: 16px 10px 22px;
+    border-radius: 36px;
+  }
+  .hub__tiras,
+  .hub__arco {
+    display: none;
+  }
+  .hub__globo {
+    position: static;
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: auto;
+    max-width: 100%;
+    border-radius: 24px;
+    translate: none;
+    font-size: 1.05rem;
+  }
+  .hub__mochila {
+    position: static;
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(46%, 200px);
+    translate: none;
+  }
+  .hub__boton {
+    position: static;
+    width: auto;
+    gap: 8px;
+    translate: none;
+  }
+  .hub__circulo {
+    width: min(26vw, 112px);
+    padding: 14px;
+  }
+  .hub__etiqueta {
+    font-size: 1rem;
+    padding: 0.3em 0.7em;
+  }
+}

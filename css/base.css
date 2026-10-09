@@ -1,0 +1,382 @@
+/* ==========================================================
+   BASE: colores, tipografías, fondo de cielo y botones
+   ========================================================== */
+
+:root {
+  /* Paleta pastel */
+  --celeste: #d6efff;
+  --celeste-fuerte: #6ec6ff;
+  --celeste-oscuro: #3f9fd8;
+  --amarillo: #fff1b8;
+  --amarillo-fuerte: #ffd95e;
+  --amarillo-oscuro: #e0b43a;
+  --rosa: #ffe0e8;
+  --rosa-fuerte: #ff9fb2;
+  --rosa-oscuro: #e57791;
+  --menta: #d3f5e8;
+  --menta-fuerte: #6fd6b0;
+  --menta-oscuro: #3fb48a;
+  --lila: #ebe3ff;
+  --lila-fuerte: #b69cff;
+  --lila-oscuro: #8d72e0;
+  --naranja: #ffe6d1;
+  --naranja-fuerte: #ffb36b;
+  --naranja-oscuro: #e58e3f;
+
+  --tinta: #3d3466;
+  --tinta-suave: #574e80;
+  --crema: #fffaf2;
+  --blanco: #ffffff;
+
+  --fuente-titulo: "Baloo 2", "Nunito", "Trebuchet MS", system-ui, sans-serif;
+  --fuente-texto: "Nunito", "Trebuchet MS", system-ui, sans-serif;
+
+  --sombra: 0 6px 0 rgba(61, 52, 102, 0.1), 0 16px 34px rgba(61, 52, 102, 0.14);
+  --sombra-chica: 0 4px 0 rgba(61, 52, 102, 0.1), 0 8px 18px rgba(61, 52, 102, 0.12);
+  --rebote: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Cada tema pinta una tarjeta, un botón o un elemento con su color. */
+.tema-celeste { --c-fondo: var(--celeste); --c-fuerte: var(--celeste-fuerte); --c-oscuro: var(--celeste-oscuro); }
+.tema-amarillo { --c-fondo: var(--amarillo); --c-fuerte: var(--amarillo-fuerte); --c-oscuro: var(--amarillo-oscuro); }
+.tema-rosa { --c-fondo: var(--rosa); --c-fuerte: var(--rosa-fuerte); --c-oscuro: var(--rosa-oscuro); }
+.tema-menta { --c-fondo: var(--menta); --c-fuerte: var(--menta-fuerte); --c-oscuro: var(--menta-oscuro); }
+.tema-lila { --c-fondo: var(--lila); --c-fuerte: var(--lila-fuerte); --c-oscuro: var(--lila-oscuro); }
+.tema-naranja { --c-fondo: var(--naranja); --c-fuerte: var(--naranja-fuerte); --c-oscuro: var(--naranja-oscuro); }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--fuente-texto);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--tinta);
+  background: var(--crema);
+  overflow-x: hidden;
+}
+
+/* Textura de papel muy suave sobre todo el sitio */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 4px solid var(--tinta);
+  outline-offset: 4px;
+}
+
+.principal {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.principal:focus {
+  outline: none;
+}
+
+.solo-lectores {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saltar {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 200;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--blanco);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: var(--sombra-chica);
+}
+
+.saltar:focus {
+  top: 12px;
+}
+
+/* ---------------- Cielo decorativo ---------------- */
+
+.cielo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 88% 6%, rgba(255, 241, 184, 0.9) 0 60px, transparent 200px),
+    linear-gradient(180deg, #bfe6ff 0%, #e2f4ff 38%, #fff8ec 78%, var(--crema) 100%);
+}
+
+.cielo__nube {
+  position: absolute;
+  left: 0;
+  width: 150px;
+  height: 46px;
+  border-radius: 999px;
+  background: var(--blanco);
+  opacity: 0.85;
+  animation: nube-viaja 110s linear infinite;
+}
+
+.cielo__nube::before,
+.cielo__nube::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cielo__nube::before { width: 64px; height: 64px; top: -32px; left: 22px; }
+.cielo__nube::after { width: 82px; height: 82px; top: -46px; right: 20px; }
+
+.cielo__nube--1 { top: 13%; animation-delay: -20s; }
+.cielo__nube--2 { top: 38%; transform: scale(0.7); animation-duration: 140s; animation-delay: -90s; opacity: 0.7; }
+.cielo__nube--3 { top: 66%; transform: scale(0.85); animation-duration: 125s; animation-delay: -55s; opacity: 0.6; }
+
+@keyframes nube-viaja {
+  from { translate: -220px 0; }
+  to { translate: calc(100vw + 220px) 0; }
+}
+
+.cielo__brillo {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #fff3a6;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: titila 3.6s ease-in-out infinite;
+}
+
+.cielo__brillo--1 { top: 22%; left: 8%; }
+.cielo__brillo--2 { top: 9%; left: 46%; animation-delay: -1.2s; width: 12px; height: 12px; }
+.cielo__brillo--3 { top: 30%; right: 9%; animation-delay: -2.1s; }
+.cielo__brillo--4 { top: 56%; left: 4%; animation-delay: -0.6s; width: 13px; height: 13px; background: #ffd6e0; }
+
+@keyframes titila {
+  0%, 100% { opacity: 0.35; transform: scale(0.7) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(20deg); }
+}
+
+/* ---------------- Secciones ---------------- */
+
+.seccion {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 34px) 16px 40px;
+  animation: seccion-entra 0.45s ease-out both;
+}
+
+@keyframes seccion-entra {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.seccion__cabecera {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.seccion__titulo {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 4.6vw, 3rem);
+  line-height: 1.05;
+  text-shadow: 0 4px 0 var(--blanco);
+}
+
+.seccion__titulo:focus {
+  outline: none;
+}
+
+.seccion__bajada {
+  margin-top: 8px;
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+  font-weight: 700;
+  color: var(--tinta-suave);
+}
+
+/* ---------------- Botones ---------------- */
+
+.boton {
+  --b-fondo: var(--c-fuerte, var(--amarillo-fuerte));
+  --b-sombra: var(--c-oscuro, var(--amarillo-oscuro));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 56px;
+  padding: 0.6em 1.5em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--b-fondo);
+  color: var(--tinta);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.1;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--b-sombra), 0 10px 20px rgba(61, 52, 102, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.boton svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+}
+
+.boton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 var(--b-sombra), 0 14px 24px rgba(61, 52, 102, 0.18);
+}
+
+.boton:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--b-sombra), 0 4px 10px rgba(61, 52, 102, 0.15);
+}
+
+.boton--suave {
+  --b-fondo: var(--blanco);
+  --b-sombra: #d9d2f0;
+}
+
+/* ---------------- Aviso flotante ---------------- */
+
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 90;
+  width: min(560px, calc(100vw - 32px));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 28px;
+  border: 5px solid var(--amarillo-fuerte);
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+  font-weight: 800;
+  translate: -50% 0;
+  transform: translateY(160%);
+  transition: transform 0.45s var(--rebote);
+}
+
+.aviso--visible {
+  transform: none;
+}
+
+.aviso__dibujo {
+  width: 56px;
+  flex: none;
+}
+
+.aviso__texto {
+  flex: 1;
+}
+
+.aviso__cerrar {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--rosa);
+  color: var(--tinta);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ---------------- Pie con colinas ---------------- */
+
+.pie {
+  position: relative;
+  z-index: 1;
+  margin-top: 24px;
+  padding: 96px 16px 22px;
+  text-align: center;
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: 1.1rem;
+  background:
+    radial-gradient(ellipse 55% 100% at 18% 100%, #b7efd9 0 64%, transparent 65%),
+    radial-gradient(ellipse 60% 100% at 86% 100%, #a3e8cd 0 62%, transparent 63%),
+    linear-gradient(transparent 70%, #b7efd9 70%);
+}
+
+.sin-js {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--blanco);
+  text-align: center;
+  font-weight: 800;
+}
+
+/* ---------------- Menos movimiento si la persona lo pide ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cielo__nube {
+    animation: none !important;
+    translate: 20vw 0;
+  }
+  .cielo__nube--2 { translate: 70vw 0; }
+  .cielo__nube--3 { translate: 45vw 0; }
+}

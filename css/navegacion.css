@@ -1,0 +1,205 @@
+/* ==========================================================
+   BARRA SUPERIOR Y PESTAÑAS
+   ========================================================== */
+
+.barra {
+  position: relative;
+  z-index: 20;
+  margin: 0 auto;
+  width: min(1280px, 100%);
+  padding: 10px 12px 0;
+}
+
+.barra__contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 4px solid var(--blanco);
+  box-shadow: var(--sombra-chica);
+  backdrop-filter: blur(8px);
+}
+
+.barra__marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  border-radius: 999px;
+  padding-right: 8px;
+}
+
+.barra__logo {
+  width: 56px;
+  flex: none;
+  animation: sol-gira 18s linear infinite;
+}
+
+@keyframes sol-gira {
+  to { transform: rotate(360deg); }
+}
+
+.barra__nombre {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  line-height: 1.05;
+}
+
+.barra__nav {
+  display: flex;
+  gap: 10px;
+}
+
+.pestana {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 56px;
+  padding: 5px 16px 5px 6px;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background: var(--c-fondo);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.1;
+  text-decoration: none;
+  transition: transform 0.2s var(--rebote), background-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pestana__icono {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--blanco);
+}
+
+.pestana__icono svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pestana:hover {
+  transform: translateY(-3px) rotate(-1.5deg);
+}
+
+/* Pestaña activa: color más fuerte, borde y un puntito debajo */
+.pestana[aria-current="page"] {
+  background: var(--c-fuerte);
+  border-color: var(--tinta);
+}
+
+.pestana[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--tinta);
+  translate: -50% 0;
+}
+
+/* Botón "Volver a la mochila" arriba de cada sección */
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  margin-bottom: 10px;
+  padding: 0.3em 1.1em 0.3em 0.7em;
+  border-radius: 999px;
+  background: var(--blanco);
+  box-shadow: var(--sombra-chica);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: transform 0.2s var(--rebote);
+}
+
+.volver svg {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+.volver:hover {
+  transform: translateX(-4px);
+}
+
+/* En pantallas anchas, "Volver" va a la izquierda del título */
+@media (min-width: 1000px) {
+  .seccion__cabecera {
+    position: relative;
+    padding-inline: 200px;
+  }
+  .volver {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    margin: 0;
+  }
+}
+
+/* Pantallas medianas: el nombre arriba y las pestañas abajo */
+@media (max-width: 1220px) {
+  .barra__contenido {
+    flex-direction: column;
+    border-radius: 34px;
+  }
+  .barra__nav {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Celulares: cinco botones redondos solo con dibujo */
+@media (max-width: 640px) {
+  .barra {
+    padding: 8px 8px 0;
+  }
+  .barra__contenido {
+    gap: 8px;
+    padding: 8px 8px 16px;
+    border-radius: 28px;
+  }
+  .barra__logo {
+    width: 44px;
+  }
+  .barra__nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .pestana {
+    justify-content: center;
+    min-height: 58px;
+    padding: 5px;
+    border-radius: 20px;
+  }
+  .pestana__texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .pestana__icono {
+    width: 46px;
+    height: 46px;
+  }
+  .pestana[aria-current="page"]::after {
+    bottom: -12px;
+  }
+}

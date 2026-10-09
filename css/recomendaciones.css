@@ -1,0 +1,1019 @@
+/* ==========================================================
+   RECOMENDACIONES: LA MOCHILA DE EMERGENCIA
+   ========================================================== */
+
+/* ---------------- Modos (jugar / ver todo junto) y voz ---------------- */
+
+.herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.modos {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 34px;
+  background: var(--blanco);
+  box-shadow: var(--sombra-chica);
+}
+
+.modos__boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: 52px;
+  padding: 0.35em 1.2em 0.35em 0.7em;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tinta);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.modos__boton svg {
+  width: 1.7em;
+  height: 1.7em;
+}
+
+.modos__boton:hover {
+  background: var(--amarillo);
+}
+
+.modos__boton[aria-pressed="true"] {
+  background: var(--amarillo-fuerte);
+  border-color: var(--tinta);
+}
+
+.boton-voz {
+  min-height: 52px;
+  font-size: 1rem;
+  padding: 0.4em 1.2em;
+}
+
+.boton-voz[aria-pressed="false"] {
+  color: var(--tinta-suave);
+}
+
+/* ---------------- Contador: cosas guardadas ---------------- */
+
+.mochila__tablero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 22px;
+  margin: 0 auto 16px;
+}
+
+.progreso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 14px;
+  padding: 8px 22px;
+  border-radius: 999px;
+  border: 4px solid var(--blanco);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--sombra-chica);
+}
+
+.progreso__texto {
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.progreso__texto strong {
+  font-weight: 800;
+  font-size: 1.15em;
+}
+
+/* Una ranurita por cada cosa: vacía (punteada) o con su dibujo */
+.progreso__ranuras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ranura {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2.5px dashed rgba(61, 52, 102, 0.3);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.ranura--llena {
+  padding: 3px;
+  border: 2.5px solid var(--blanco);
+  background: var(--c-fondo);
+  box-shadow: 0 2px 0 rgba(61, 52, 102, 0.12);
+  animation: ranura-pop 0.5s var(--rebote);
+}
+
+.ranura svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes ranura-pop {
+  from { transform: scale(0.2) rotate(-60deg); }
+}
+
+/* ---------------- Escenario: mochila en el centro y cosas en ronda ---------------- */
+
+.mochila__juego {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+}
+
+@media (min-width: 1100px) {
+  .mochila__juego {
+    grid-template-columns: minmax(0, 1fr) 330px;
+    align-items: center;
+  }
+}
+
+.escenario {
+  --tam: 13.5cqi;
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, max(560px, calc((100vh - 350px) * 1.3)));
+  width: min(100%, max(560px, calc((100svh - 350px) * 1.3)));
+  aspect-ratio: 1.3;
+  margin: 0 auto;
+  border-radius: 48px;
+  border: 6px solid var(--blanco);
+  background:
+    radial-gradient(ellipse 30% 36% at 50% 50%, rgba(255, 255, 255, 0.95) 0 70%, rgba(255, 255, 255, 0) 100%),
+    radial-gradient(rgba(255, 255, 255, 0.6) 2px, transparent 2.5px) 0 0 / 26px 26px,
+    linear-gradient(160deg, #c2e8ff, #ddf2ff 55%, #e9f7ff);
+  box-shadow: var(--sombra);
+}
+
+/* Camino punteado de la ronda */
+.escenario::before {
+  content: "";
+  position: absolute;
+  left: 9.5%;
+  top: 13%;
+  width: 81%;
+  height: 74%;
+  border: 4px dashed rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+}
+
+.escenario__mochila {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 33%;
+  width: 33cqi;
+  translate: -50% -50%;
+  filter: drop-shadow(0 12px 10px rgba(61, 52, 102, 0.16));
+  animation: respira 3.4s ease-in-out infinite;
+  transition: scale 0.25s var(--rebote), filter 0.25s;
+}
+
+@keyframes respira {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2.5%) scale(1.02); }
+}
+
+/* Mientras se arrastra algo encima, la mochila se agranda y brilla */
+.escenario__mochila--esperando {
+  scale: 1.12;
+  filter: drop-shadow(0 0 18px #ffd95e) drop-shadow(0 12px 10px rgba(61, 52, 102, 0.16));
+}
+
+.escenario__mochila--feliz {
+  animation: salta 0.9s var(--rebote);
+}
+
+@keyframes salta {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.1, 0.9) translateY(4%); }
+  60% { transform: scale(0.95, 1.06) translateY(-6%); }
+  100% { transform: scale(1); }
+}
+
+/* Partes de la mochila que se animan */
+.mochila-ojos {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: parpadea 5s infinite;
+}
+
+@keyframes parpadea {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+.mochila-boca {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.escenario__mochila--feliz .mochila-boca,
+.escenario__mochila--abre .mochila-boca,
+.escenario__mochila--esperando .mochila-boca,
+.festejo .mochila-boca {
+  opacity: 1;
+}
+
+.escenario__mochila--feliz .mochila-sonrisa,
+.escenario__mochila--abre .mochila-sonrisa,
+.escenario__mochila--esperando .mochila-sonrisa,
+.festejo .mochila-sonrisa {
+  opacity: 0;
+}
+
+/* ---------------- Cada cosa para guardar ---------------- */
+
+.elemento {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  width: calc(var(--tam) + 4cqi);
+  translate: -50% -50%;
+  display: flex;
+  justify-content: center;
+}
+
+.elemento__boton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1cqi;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.elemento__burbuja {
+  position: relative;
+  display: block;
+  width: var(--tam);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: max(4px, 0.6cqi) solid var(--blanco);
+  background: var(--blanco);
+  box-shadow: 0 6px 0 rgba(61, 52, 102, 0.1), 0 12px 22px rgba(61, 52, 102, 0.16);
+  animation: flota 4.2s ease-in-out infinite;
+  animation-delay: var(--retraso, 0s);
+  transition: background-color 0.3s, opacity 0.2s, scale 0.25s var(--rebote);
+}
+
+@keyframes flota {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5%); }
+}
+
+.elemento__boton:hover .elemento__burbuja {
+  scale: 1.07;
+}
+
+.elemento__boton:active .elemento__burbuja {
+  scale: 0.94;
+}
+
+/* La tapa con el signo de pregunta */
+.elemento__tapa {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.75) 0 13%, transparent 14%),
+    radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2.5px) 0 0 / 14px 14px,
+    var(--c-fuerte);
+  transition: transform 0.45s var(--rebote), opacity 0.3s;
+}
+
+.elemento__pregunta {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: calc(var(--tam) * 0.56);
+  line-height: 1;
+  color: var(--blanco);
+  text-shadow: 0 4px 0 var(--c-oscuro);
+  translate: 0 6%;
+}
+
+.elemento__boton:hover .elemento__pregunta {
+  animation: menea-chico 0.5s ease-in-out;
+}
+
+@keyframes menea-chico {
+  25% { transform: rotate(-12deg); }
+  75% { transform: rotate(12deg); }
+}
+
+/* El dibujo, escondido hasta que se toca */
+.elemento__dibujo {
+  position: absolute;
+  inset: 9%;
+  opacity: 0;
+  transform: scale(0.3) rotate(-25deg);
+  transition: opacity 0.3s, transform 0.5s var(--rebote);
+}
+
+.elemento__dibujo svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* El hueco con tilde que queda cuando la cosa ya está en la mochila */
+.elemento__hueco {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--c-oscuro);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.3s 0.2s, transform 0.4s 0.2s var(--rebote);
+}
+
+.elemento__hueco svg {
+  width: 46%;
+  height: 46%;
+}
+
+.elemento__etiqueta {
+  padding: 0.22em 0.75em;
+  border-radius: 999px;
+  background: var(--c-fuerte);
+  box-shadow: 0 3px 0 rgba(61, 52, 102, 0.1);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(13px, 2.05cqi, 21px);
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--tinta);
+}
+
+.elemento__etiqueta:empty {
+  display: none;
+}
+
+/* ---- Descubierto: se ve el dibujo y se puede arrastrar ---- */
+
+.elemento[data-estado="descubierto"] .elemento__boton {
+  touch-action: none;
+  cursor: grab;
+}
+
+.elemento[data-estado="descubierto"] .elemento__burbuja,
+.elemento[data-estado="guardado"] .elemento__burbuja {
+  background: var(--c-fondo);
+}
+
+.elemento[data-estado="descubierto"] .elemento__tapa,
+.elemento[data-estado="guardado"] .elemento__tapa {
+  transform: scale(0) rotate(120deg);
+  opacity: 0;
+}
+
+.elemento[data-estado="descubierto"] .elemento__dibujo {
+  opacity: 1;
+  transform: none;
+}
+
+/* Brillito para avisar que ahora se puede guardar */
+.elemento[data-estado="descubierto"] .elemento__burbuja {
+  box-shadow: 0 0 0 5px rgba(255, 217, 94, 0.7), 0 12px 22px rgba(61, 52, 102, 0.16);
+}
+
+/* ---- Guardado: queda el lugar vacío con un tilde ---- */
+
+.elemento[data-estado="guardado"] .elemento__burbuja {
+  border-style: dashed;
+  border-color: var(--c-oscuro);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: none;
+  animation: none;
+}
+
+.elemento[data-estado="guardado"] .elemento__hueco {
+  opacity: 1;
+  transform: none;
+}
+
+.elemento[data-estado="guardado"] .elemento__etiqueta {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--tinta-suave);
+}
+
+.elemento--arrastrando .elemento__burbuja {
+  opacity: 0.35;
+}
+
+/* ---- Animaciones de cada momento ---- */
+
+.elemento--recien .elemento__burbuja {
+  animation: destapa 0.8s var(--rebote);
+}
+
+@keyframes destapa {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.22); }
+  65% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.elemento--recien .elemento__etiqueta {
+  animation: etiqueta-pop 0.6s var(--rebote);
+}
+
+@keyframes etiqueta-pop {
+  from { transform: scale(0.4); opacity: 0; }
+}
+
+.elemento--escondiendo .elemento__tapa {
+  animation: tapa-vuelve 0.5s var(--rebote);
+}
+
+@keyframes tapa-vuelve {
+  from { transform: scale(0) rotate(-120deg); }
+}
+
+/* Chispitas que salen al descubrir */
+.elemento__chispas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.elemento__chispas span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16%;
+  height: 16%;
+  margin: -8% 0 0 -8%;
+  opacity: 0;
+  background: var(--amarillo-fuerte);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+.elemento__chispas span:nth-child(even) {
+  background: var(--c-fuerte);
+}
+
+.elemento--recien .elemento__chispas span {
+  animation: chispa 0.8s ease-out forwards;
+}
+
+@keyframes chispa {
+  from {
+    opacity: 1;
+    transform: rotate(calc(var(--i) * 45deg)) translateY(0) scale(0.3);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(calc(var(--i) * 45deg)) translateY(calc(var(--tam) * -0.85)) scale(1.1);
+  }
+}
+
+/* Copia del dibujo que vuela hasta la mochila */
+.fantasma {
+  position: fixed;
+  z-index: 80;
+  padding: 9%;
+  border-radius: 50%;
+  border: 4px solid var(--blanco);
+  background: var(--blanco);
+  box-shadow: 0 12px 24px rgba(61, 52, 102, 0.25);
+  pointer-events: none;
+}
+
+.fantasma svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------- Globo de texto ---------------- */
+
+.globo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 20px 24px;
+  border-radius: 36px;
+  border: 5px solid var(--blanco);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: var(--sombra);
+  text-align: center;
+}
+
+/* Colita del globo apuntando a la mochila */
+.globo::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  background: inherit;
+  border-left: 5px solid var(--blanco);
+  border-bottom: 5px solid var(--blanco);
+  border-radius: 0 0 0 10px;
+  translate: 0 -50%;
+  rotate: 45deg;
+}
+
+.globo--nuevo {
+  animation: globo-pop 0.5s var(--rebote);
+}
+
+@keyframes globo-pop {
+  from { transform: scale(0.92); }
+}
+
+.globo__dibujo {
+  width: 130px;
+}
+
+.globo__dibujo svg {
+  width: 100%;
+  max-height: 140px;
+  margin: 0 auto;
+}
+
+.globo__cuerpo,
+.globo__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.globo__cuerpo {
+  gap: 12px;
+}
+
+.globo__animo {
+  padding: 0.2em 0.9em;
+  border-radius: 999px;
+  background: var(--amarillo);
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.globo__nombre {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 2.2rem;
+  line-height: 1.05;
+}
+
+.globo__frase {
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  color: var(--tinta-suave);
+}
+
+.globo__pista {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--tinta-suave);
+}
+
+.globo__pista:empty {
+  display: none;
+}
+
+.globo__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.globo__acciones .boton {
+  min-height: 50px;
+  font-size: 1.1rem;
+  padding: 0.4em 1.2em;
+}
+
+.globo__guardar svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.globo__guardar:not([hidden]) {
+  animation: late 1.6s ease-in-out infinite;
+}
+
+@keyframes late {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.06; }
+}
+
+/* En pantallas más chicas el globo queda pegado abajo mientras se juega */
+@media (max-width: 1099px) {
+  .globo {
+    position: sticky;
+    bottom: 10px;
+    z-index: 5;
+    flex-direction: row;
+    width: min(100%, 760px);
+    margin: 0 auto;
+    padding: 12px 18px 12px 12px;
+    border-radius: 30px;
+    text-align: left;
+    border-color: var(--amarillo-fuerte);
+  }
+  .globo::before {
+    display: none;
+  }
+  .globo__dibujo {
+    width: 84px;
+    flex: none;
+  }
+  .globo__dibujo svg {
+    max-height: 90px;
+  }
+  .globo__cuerpo,
+  .globo__texto {
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .globo__cuerpo {
+    gap: 8px;
+  }
+  .globo__acciones {
+    justify-content: flex-start;
+  }
+  .globo__animo {
+    font-size: 0.95rem;
+  }
+  .globo__nombre {
+    font-size: 1.7rem;
+  }
+  .globo__frase {
+    font-size: 1.08rem;
+  }
+}
+
+/* ---------------- Celulares: grilla alrededor de la mochila ---------------- */
+
+@media (max-width: 699px) {
+  .escenario {
+    --tam: min(86px, 24vw);
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1fr;
+    grid-auto-flow: row dense;
+    align-items: start;
+    gap: 16px 6px;
+    width: 100%;
+    aspect-ratio: auto;
+    padding: 18px 6px 20px;
+    border-radius: 36px;
+  }
+  .escenario::before {
+    display: none;
+  }
+  .escenario__mochila {
+    position: static;
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    align-self: center;
+    width: 100%;
+    translate: none;
+  }
+  .elemento {
+    position: static;
+    width: 100%;
+    translate: none;
+  }
+  .elemento__boton {
+    gap: 6px;
+  }
+  .elemento__etiqueta {
+    font-size: 14px;
+    white-space: normal;
+    padding: 0.25em 0.6em;
+  }
+  .mochila__tablero {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .progreso {
+    padding: 8px 14px;
+    border-radius: 28px;
+  }
+  .progreso__texto {
+    font-size: 1.1rem;
+  }
+  .ranura {
+    width: 26px;
+    height: 26px;
+  }
+  .mochila__reiniciar {
+    min-height: 48px;
+    padding: 0.4em 1.1em;
+    font-size: 1rem;
+  }
+  .modos__boton {
+    font-size: 1rem;
+    padding: 0.3em 0.9em 0.3em 0.5em;
+  }
+  .globo {
+    padding: 8px 12px 10px 8px;
+    gap: 8px;
+  }
+  .globo__dibujo {
+    width: 60px;
+  }
+  .globo__animo {
+    font-size: 0.85rem;
+  }
+  .globo__nombre {
+    font-size: 1.4rem;
+  }
+  .globo__frase {
+    font-size: 1rem;
+  }
+  .globo__pista {
+    display: none;
+  }
+  .globo__acciones .boton {
+    min-height: 44px;
+    font-size: 0.95rem;
+    padding: 0.3em 0.9em;
+  }
+}
+
+/* ---------------- Festejo final ---------------- */
+
+.festejo {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 28px 22px 26px;
+  border: 6px solid var(--blanco);
+  border-radius: 40px;
+  background: linear-gradient(180deg, #fff6d6, var(--blanco) 60%);
+  color: var(--tinta);
+  text-align: center;
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.festejo[open] {
+  animation: festejo-entra 0.6s var(--rebote);
+}
+
+@keyframes festejo-entra {
+  from { transform: scale(0.6); opacity: 0; }
+}
+
+.festejo::backdrop {
+  background: rgba(61, 52, 102, 0.35);
+  backdrop-filter: blur(3px);
+}
+
+.festejo__mochila {
+  position: relative;
+  width: 150px;
+  margin: 0 auto 6px;
+  animation: festejo-salta 1.2s ease-in-out infinite;
+}
+
+@keyframes festejo-salta {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+.festejo__titulo {
+  position: relative;
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  line-height: 1;
+}
+
+.festejo__texto {
+  position: relative;
+  margin-top: 10px;
+  font-weight: 800;
+  font-size: 1.3rem;
+  line-height: 1.35;
+}
+
+.festejo__consejo {
+  position: relative;
+  margin-top: 8px;
+  font-weight: 700;
+  color: var(--tinta-suave);
+}
+
+.festejo__botones {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.festejo__confeti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confeti {
+  position: absolute;
+  top: -20px;
+  left: var(--x);
+  width: 10px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--c);
+  animation: cae var(--t) linear var(--d) infinite;
+}
+
+.confeti--redondo {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.confeti--estrella {
+  width: 16px;
+  height: 16px;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+@keyframes cae {
+  from { transform: translateY(0) rotate(var(--g)); }
+  to { transform: translateY(620px) rotate(calc(var(--g) + 540deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confeti {
+    display: none;
+  }
+}
+
+/* ---------------- Pasos: qué hacemos si tiembla (en el jardín y en casa) ---------------- */
+
+.pasos__intro {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.pasos__momento {
+  display: table;
+  margin: 26px 0 16px;
+  padding: 0.15em 1em;
+  border-radius: 999px;
+  background: var(--blanco);
+  box-shadow: var(--sombra-chica);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.6rem;
+}
+
+.pasos__intro + .pasos__momento {
+  margin-top: 0;
+}
+
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.paso__boton {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 14px 14px 18px;
+  border: 6px solid var(--blanco);
+  border-radius: 32px;
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.6) 2px, transparent 2.5px) 0 0 / 22px 22px,
+    var(--c-fondo);
+  box-shadow: var(--sombra);
+  color: var(--tinta);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.3s var(--rebote);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.paso:nth-child(odd) .paso__boton:hover {
+  transform: translateY(-5px) rotate(-1deg);
+}
+
+.paso:nth-child(even) .paso__boton:hover {
+  transform: translateY(-5px) rotate(1deg);
+}
+
+.paso__numero {
+  position: absolute;
+  top: -14px;
+  left: -12px;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid var(--blanco);
+  background: var(--c-fuerte);
+  box-shadow: 0 4px 0 var(--c-oscuro);
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.paso__dibujo {
+  width: 100%;
+  padding: 8px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.paso__dibujo svg {
+  width: 100%;
+  max-height: 150px;
+  margin: 0 auto;
+}
+
+.paso__titulo {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.paso--toca .paso__dibujo svg {
+  animation: destapa 0.7s var(--rebote);
+}
+
+.consejo.pasos__consejo {
+  margin: 40px auto 0;
+}
+
+@media (max-width: 560px) {
+  .pasos {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 12px;
+  }
+  .paso__boton {
+    padding: 10px 8px 14px;
+    border-radius: 26px;
+  }
+  .paso__titulo {
+    font-size: 1.02rem;
+  }
+  .paso__numero {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    top: -10px;
+    left: -8px;
+  }
+  .pasos__momento {
+    font-size: 1.35rem;
+  }
+}
