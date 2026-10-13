@@ -33,13 +33,15 @@
 }
 
 .barra__logo {
-  width: 56px;
+  width: 64px;
+  height: 64px;
   flex: none;
-  animation: sol-gira 18s linear infinite;
+  filter: drop-shadow(0 3px 4px rgba(61, 52, 102, 0.2));
+  transition: transform 0.3s var(--rebote);
 }
 
-@keyframes sol-gira {
-  to { transform: rotate(360deg); }
+.barra__marca:hover .barra__logo {
+  transform: rotate(-8deg) scale(1.06);
 }
 
 .barra__nombre {
@@ -174,7 +176,8 @@
     border-radius: 28px;
   }
   .barra__logo {
-    width: 44px;
+    width: 52px;
+    height: 52px;
   }
   .barra__nav {
     display: grid;

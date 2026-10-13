@@ -21,13 +21,13 @@
  *
  *  Ilustraciones disponibles (`ilustracion`):
  *    salas:     "animalitos", "lapices", "flores", "personajes"
- *    juegos:    "preguntas", "oca", "memoria", "frases"
+ *    juegos:    "preguntas", "oca", "memoria", "frases", "comic"
  *    canciones: "notas"
  */
 window.JARDIN_CONFIG = {
   jardin: {
     // Nombre que aparece arriba de todo y en la pestaña del navegador.
-    nombre: "Nuestro Jardín",
+    nombre: "JIN 0-152 Tren Trasandino",
     titulo: "¡Bienvenidos a nuestro jardín!",
     lema: "Aprendemos, descubrimos y jugamos juntos",
   },
@@ -89,6 +89,24 @@ window.JARDIN_CONFIG = {
       ilustracion: "frases",
       boton: "¡Comenzar!",
       enlace: "https://wordwall.net/es/resource/120931043?wwmethod=link",
+    },
+    {
+      titulo: "Juego de memoria",
+      tipo: "Memoria (6 parejas)",
+      plataforma: "Mobbyt",
+      color: "menta",
+      ilustracion: "memoria",
+      boton: "¡Jugar!",
+      enlace: "https://mobbyt.com/videojuego/educativo/?Id=389382",
+    },
+    {
+      titulo: "Mi cómic sismo",
+      tipo: "Cómic",
+      plataforma: "Mobbyt",
+      color: "amarillo",
+      ilustracion: "comic",
+      boton: "¡Jugar!",
+      enlace: "https://mobbyt.com/videojuego/educativo/play.php?Id=389395",
     },
   ],
 

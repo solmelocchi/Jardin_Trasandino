@@ -624,6 +624,24 @@ window.Jardin = window.Jardin || {};
     ),
   };
 
+  // Juego de cómic: una historieta de tres cuadritos.
+  juegos.comic = svg(
+    "0 0 200 140",
+    `<rect x="14" y="14" width="172" height="112" rx="12" fill="#fff"/>
+     <path d="M74 14v112M128 14v56M128 70h58" stroke-width="4"/>
+     <rect x="31" y="84" width="26" height="32" rx="10" fill="#ff9fb2"/>
+     ${cabeza(44, 66, 17, "#8a5a44")}
+     <path d="M82 76h40" stroke="#e8b87a" stroke-width="8"/>
+     <path d="M88 80v36M116 80v36" stroke="#d9a066" stroke-width="5"/>
+     ${cabeza(102, 104, 11, "#4a3b36")}
+     <path d="M138 24a8 8 0 0 1 8-8h28a8 8 0 0 1 8 8v16a8 8 0 0 1-8 8h-16l-9 8v-8h-3a8 8 0 0 1-8-8z" fill="#fff3a6" stroke-width="3"/>
+     <text x="160" y="41" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="20" fill="${TINTA}" stroke="none">¡Ay!</text>
+     <path d="M140 98L157 84l17 14" fill="#ff9fb2" stroke-width="3"/>
+     <rect x="144" y="96" width="26" height="22" rx="3" fill="#8be0c4" stroke-width="3"/>
+     <path d="M136 98q-5 7 0 14M178 98q5 7 0 14" fill="none" stroke-width="3"/>
+     ${estrella(28, 28, 8, "#ffd95e")}`
+  );
+
   Jardin.ilustraciones = Object.assign({}, elementos, salas, juegos, botones, pasos, iconos, { mochila });
 
   // Devuelve el dibujo pedido o, si el nombre no existe, una estrella.

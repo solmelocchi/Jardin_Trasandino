@@ -31,7 +31,7 @@ Jardin.crearNavegacion = function (config) {
   barra.innerHTML = `
     <div class="barra__contenido">
       <a class="barra__marca" href="#inicio">
-        <span class="barra__logo">${ilu.sol}</span>
+        <img class="barra__logo" src="img/logo.png" alt="" width="64" height="64" />
         <span class="barra__nombre"></span>
       </a>
       <nav class="barra__nav" aria-label="Partes de la mochila">${pestanas}</nav>

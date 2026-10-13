@@ -31,8 +31,11 @@ Jardin.crearInicio = function (config) {
   seccion.setAttribute("aria-labelledby", "inicio-titulo");
   seccion.innerHTML = `
     <div class="inicio__portada">
-      <h1 class="inicio__titulo" id="inicio-titulo" tabindex="-1"></h1>
-      <p class="inicio__lema"></p>
+      <img class="inicio__logo" src="img/logo.png" alt="Logo del JIN 0-152 Tren Trasandino" width="160" height="160" />
+      <div class="inicio__textos">
+        <h1 class="inicio__titulo" id="inicio-titulo" tabindex="-1"></h1>
+        <p class="inicio__lema"></p>
+      </div>
     </div>
 
     <div class="hub">
