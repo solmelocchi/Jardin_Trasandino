@@ -22,7 +22,7 @@
  *  Ilustraciones disponibles (`ilustracion`):
  *    salas:     "animalitos", "lapices", "flores", "personajes"
  *    juegos:    "preguntas", "oca", "memoria", "frases", "comic"
- *    canciones: "notas"
+ *    canciones: "notas", "tren"
  */
 window.JARDIN_CONFIG = {
   jardin: {
@@ -122,4 +122,19 @@ window.JARDIN_CONFIG = {
       youtube: "https://youtu.be/g_n3uibCq0I?feature=shared",
     },
   ],
+
+  // ---------- Recomendaciones: video del jardín ----------
+  // Aparece en Recomendaciones ante contingencias, en "Video del tren".
+  videoRecomendaciones: {
+    titulo: "¡El tren se mueve seguro!",
+    descripcion: "Aprendemos jugando",
+    color: "celeste",
+    ilustracion: "tren",
+    boton: "¡Ver el video!",
+    botonYoutube: "¡Ver en YouTube!",
+    youtube: "https://youtu.be/S8K65Nvao_g?feature=shared",
+    // Afiche que se muestra al lado del video (dejar "" para no mostrarlo).
+    afiche: "img/afiche-salitas-5c-5d.webp",
+    descripcionAfiche: "Afiche del JIN 0-152 Tren Trasandino: Prepárate para aprender junto a nosotros. Salitas 5C y 5D.",
+  },
 };

@@ -51,7 +51,7 @@ window.Jardin = window.Jardin || {};
     if (ms) setTimeout(() => nodo.classList.remove(clase), ms);
   }
 
-  Jardin.crearRecomendaciones = function () {
+  Jardin.crearRecomendaciones = function (config) {
     const ilu = Jardin.ilustraciones;
     const datos = Jardin.elementosMochila;
     const total = datos.length;
@@ -73,6 +73,7 @@ window.Jardin = window.Jardin || {};
           <button class="modos__boton" type="button" data-modo="juego" aria-pressed="true">${ilu.mochilita}<span>Jugar a guardar</span></button>
           <button class="modos__boton" type="button" data-modo="jardin" aria-pressed="false">${ilu.sol}<span>En el jardín</span></button>
           <button class="modos__boton" type="button" data-modo="casa" aria-pressed="false">${ilu.casa}<span>En casa</span></button>
+          <button class="modos__boton" type="button" data-modo="video" aria-pressed="false">${ilu.tren}<span>Video del tren</span></button>
         </div>
         <span class="herramientas__voz"></span>
       </div>
@@ -111,6 +112,11 @@ window.Jardin = window.Jardin || {};
 
       <div class="modo" data-panel="jardin" hidden></div>
       <div class="modo" data-panel="casa" hidden></div>
+      <div class="modo" data-panel="video" hidden>
+        <div class="video-reco">
+          <ul class="tarjetas tarjetas--canciones video-reco__video"></ul>
+        </div>
+      </div>
 
       <dialog class="festejo" aria-labelledby="festejo-titulo">
         <div class="festejo__confeti" aria-hidden="true"></div>
@@ -143,6 +149,7 @@ window.Jardin = window.Jardin || {};
       seccion.querySelectorAll(".modos__boton").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.modo === modo)));
       seccion.querySelectorAll(".modo").forEach((p) => (p.hidden = p.dataset.panel !== modo));
       Jardin.voz.callar();
+      Jardin.detenerVideos();
     }
     seccion.querySelectorAll(".modos__boton").forEach((b) => b.addEventListener("click", () => cambiarModo(b.dataset.modo)));
 
@@ -284,6 +291,25 @@ window.Jardin = window.Jardin || {};
         elementos[0].enfocar();
       }
     });
+
+    /* ---------------- Video del tren (con el afiche al lado) ---------------- */
+
+    const video = config.videoRecomendaciones;
+    const panelVideo = seccion.querySelector('[data-panel="video"]');
+    if (video && Jardin.enlaceValido(video.youtube)) {
+      panelVideo.querySelector(".video-reco__video").appendChild(Jardin.crearTarjetaCancion(video));
+      if (video.afiche) {
+        const figura = document.createElement("figure");
+        figura.className = "video-reco__afiche";
+        figura.innerHTML = `<img src="" alt="" width="800" height="800" loading="lazy" />`;
+        figura.querySelector("img").src = video.afiche;
+        figura.querySelector("img").alt = video.descripcionAfiche || "";
+        panelVideo.querySelector(".video-reco").prepend(figura);
+      }
+    } else {
+      // Sin video configurado, no se muestra el botón.
+      seccion.querySelector('[data-modo="video"]').remove();
+    }
 
     /* ---------------- Pasos: en el jardín y en casa ---------------- */
 

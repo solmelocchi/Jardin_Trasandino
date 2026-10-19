@@ -105,14 +105,14 @@ window.Jardin = window.Jardin || {};
         !valido
           ? `<p class="tarjeta__texto tarjeta__pronto">${Jardin.ilustraciones.reloj}<span>¡Muy pronto!</span></p>`
           : `<div class="tarjeta__botones">
-               ${codigo ? `<button class="boton boton--tarjeta" type="button">${Jardin.ilustraciones.play}<span>¡Escuchar!</span><span class="solo-lectores">: ${escapar(cancion.titulo)}</span></button>` : ""}
+               ${codigo ? `<button class="boton boton--tarjeta" type="button">${Jardin.ilustraciones.play}<span>${escapar(cancion.boton || "¡Escuchar!")}</span><span class="solo-lectores">: ${escapar(cancion.titulo)}</span></button>` : ""}
                ${
                  codigo
                    ? `<a class="boton boton--suave boton--chico" href="${escapar(cancion.youtube.trim())}" target="_blank" rel="noopener">
                         <span>Ver en YouTube</span>${Jardin.ilustraciones.externo}<span class="solo-lectores"> (se abre en una pestaña nueva)</span>
                       </a>`
                    : `<a class="boton boton--tarjeta" href="${escapar(cancion.youtube.trim())}" target="_blank" rel="noopener">
-                        ${Jardin.ilustraciones.play}<span>¡Escuchar en YouTube!</span><span class="solo-lectores"> (se abre en una pestaña nueva)</span>
+                        ${Jardin.ilustraciones.play}<span>${escapar(cancion.botonYoutube || "¡Escuchar en YouTube!")}</span><span class="solo-lectores"> (se abre en una pestaña nueva)</span>
                       </a>`
                }
              </div>`

@@ -642,6 +642,28 @@ window.Jardin = window.Jardin || {};
      ${estrella(28, 28, 8, "#ffd95e")}`
   );
 
+  // Tren con caritas (para el video "El tren se mueve seguro").
+  juegos.tren = svg(
+    "0 0 200 140",
+    `<path d="M8 122h184" stroke-width="4"/>
+     <path d="M20 122v8M50 122v8M80 122v8M110 122v8M140 122v8M170 122v8" stroke-width="3"/>
+     <circle cx="36" cy="30" r="8" fill="#fff"/>
+     <circle cx="50" cy="18" r="10" fill="#fff"/>
+     <rect x="28" y="40" width="16" height="26" rx="3" fill="#ffd95e"/>
+     <path d="M94 92h12" stroke-width="5"/>
+     <rect x="18" y="64" width="54" height="42" rx="12" fill="#6ec6ff"/>
+     <rect x="62" y="40" width="34" height="66" rx="7" fill="#ff8577"/>
+     <rect x="69" y="49" width="20" height="18" rx="4" fill="#fff"/>
+     ${cara(42, 84, 0.95)}
+     <rect x="100" y="44" width="86" height="12" rx="6" fill="#ff8577"/>
+     <rect x="104" y="54" width="78" height="52" rx="10" fill="#ffd95e"/>
+     <rect x="112" y="62" width="26" height="24" rx="4" fill="#fff"/>
+     <rect x="148" y="62" width="26" height="24" rx="4" fill="#fff"/>
+     ${cabeza(125, 76, 8, "#8a5a44")}
+     ${cabeza(161, 76, 8, "#e0a63a")}
+     ${[36, 70, 122, 166].map((x) => `<circle cx="${x}" cy="110" r="10" fill="#5b4f86"/><circle cx="${x}" cy="110" r="3.5" fill="#fff" stroke="none"/>`).join("")}`
+  );
+
   Jardin.ilustraciones = Object.assign({}, elementos, salas, juegos, botones, pasos, iconos, { mochila });
 
   // Devuelve el dibujo pedido o, si el nombre no existe, una estrella.

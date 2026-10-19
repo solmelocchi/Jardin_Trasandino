@@ -1017,3 +1017,39 @@
     font-size: 1.35rem;
   }
 }
+
+/* ---------------- Video del tren con el afiche ---------------- */
+
+.video-reco {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .video-reco {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  }
+}
+
+.video-reco__afiche {
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 460px);
+}
+
+.video-reco__afiche img {
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
+  border: 6px solid var(--blanco);
+  box-shadow: var(--sombra);
+  rotate: -1.5deg;
+}
+
+.video-reco__video {
+  grid-template-columns: minmax(0, 1fr);
+}

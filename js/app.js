@@ -14,7 +14,7 @@
 
   const secciones = {
     inicio: Jardin.crearInicio(config),
-    recomendaciones: Jardin.crearRecomendaciones(),
+    recomendaciones: Jardin.crearRecomendaciones(config),
     juegos: Jardin.crearJuegos(config),
     canciones: Jardin.crearCanciones(config),
     actividades: Jardin.crearActividades(config),
@@ -31,7 +31,7 @@
     navegacion.marcar(ruta);
     document.body.dataset.ruta = ruta;
     Jardin.voz.callar();
-    if (ruta !== "canciones") Jardin.detenerVideos();
+    Jardin.detenerVideos();
 
     // Al cambiar de sección, llevamos el foco al título (útil con teclado y lectores).
     if (!primeraVez) {
