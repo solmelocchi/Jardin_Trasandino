@@ -44,6 +44,17 @@ window.Jardin = window.Jardin || {};
         </section>`,
     });
     llenar(seccion, "juegos", config.juegos, (j) => Jardin.crearTarjetaEnlace(j, "juego"));
+
+    // Afiche de las salitas, arriba de los juegos.
+    const afiche = config.aficheJuegos;
+    if (afiche && afiche.imagen) {
+      const figura = document.createElement("figure");
+      figura.className = "afiche-juegos";
+      figura.innerHTML = `<img src="" alt="" width="800" height="800" loading="lazy" />`;
+      figura.querySelector("img").src = afiche.imagen;
+      figura.querySelector("img").alt = afiche.descripcion || "";
+      seccion.querySelector(".grupo").prepend(figura);
+    }
     return seccion;
   };
 

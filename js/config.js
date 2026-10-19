@@ -124,7 +124,7 @@ window.JARDIN_CONFIG = {
   ],
 
   // ---------- Recomendaciones: video del jardín ----------
-  // Aparece en Recomendaciones ante contingencias, en "Video del tren".
+  // Aparece en Recomendaciones ante contingencias, en "Video: El tren se mueve seguro".
   videoRecomendaciones: {
     titulo: "¡El tren se mueve seguro!",
     descripcion: "Aprendemos jugando",
@@ -133,8 +133,12 @@ window.JARDIN_CONFIG = {
     boton: "¡Ver el video!",
     botonYoutube: "¡Ver en YouTube!",
     youtube: "https://youtu.be/S8K65Nvao_g?feature=shared",
-    // Afiche que se muestra al lado del video (dejar "" para no mostrarlo).
-    afiche: "img/afiche-salitas-5c-5d.webp",
-    descripcionAfiche: "Afiche del JIN 0-152 Tren Trasandino: Prepárate para aprender junto a nosotros. Salitas 5C y 5D.",
+  },
+
+  // ---------- Afiche de la sección Juegos ----------
+  // Se muestra arriba de los juegos (dejar imagen: "" para no mostrarlo).
+  aficheJuegos: {
+    imagen: "img/afiche-salitas-5c-5d.webp",
+    descripcion: "Afiche del JIN 0-152 Tren Trasandino: Prepárate para aprender junto a nosotros. Salitas 5C y 5D.",
   },
 };

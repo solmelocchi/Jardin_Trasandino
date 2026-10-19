@@ -73,7 +73,7 @@ window.Jardin = window.Jardin || {};
           <button class="modos__boton" type="button" data-modo="juego" aria-pressed="true">${ilu.mochilita}<span>Jugar a guardar</span></button>
           <button class="modos__boton" type="button" data-modo="jardin" aria-pressed="false">${ilu.sol}<span>En el jardín</span></button>
           <button class="modos__boton" type="button" data-modo="casa" aria-pressed="false">${ilu.casa}<span>En casa</span></button>
-          <button class="modos__boton" type="button" data-modo="video" aria-pressed="false">${ilu.tren}<span>Video del tren</span></button>
+          <button class="modos__boton" type="button" data-modo="video" aria-pressed="false">${ilu.tren}<span>Video: El tren se mueve seguro</span></button>
         </div>
         <span class="herramientas__voz"></span>
       </div>
@@ -292,20 +292,12 @@ window.Jardin = window.Jardin || {};
       }
     });
 
-    /* ---------------- Video del tren (con el afiche al lado) ---------------- */
+    /* ---------------- Video: El tren se mueve seguro ---------------- */
 
     const video = config.videoRecomendaciones;
     const panelVideo = seccion.querySelector('[data-panel="video"]');
     if (video && Jardin.enlaceValido(video.youtube)) {
       panelVideo.querySelector(".video-reco__video").appendChild(Jardin.crearTarjetaCancion(video));
-      if (video.afiche) {
-        const figura = document.createElement("figure");
-        figura.className = "video-reco__afiche";
-        figura.innerHTML = `<img src="" alt="" width="800" height="800" loading="lazy" />`;
-        figura.querySelector("img").src = video.afiche;
-        figura.querySelector("img").alt = video.descripcionAfiche || "";
-        panelVideo.querySelector(".video-reco").prepend(figura);
-      }
     } else {
       // Sin video configurado, no se muestra el botón.
       seccion.querySelector('[data-modo="video"]').remove();
