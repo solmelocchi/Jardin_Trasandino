@@ -44,4 +44,20 @@
 
   window.addEventListener("hashchange", mostrar);
   mostrar();
+
+  // Lo que cargan las seños en la planilla reemplaza a las listas de config.js.
+  const constructores = { juegos: Jardin.crearJuegos, canciones: Jardin.crearCanciones, actividades: Jardin.crearActividades };
+  Jardin.cargarPlanilla(config).then((datos) => {
+    if (!datos) return;
+    if (datos.juegos) config.juegos = datos.juegos;
+    if (datos.canciones) config.canciones = datos.canciones;
+    if (datos.salas) config.salas = datos.salas;
+    Object.keys(constructores).forEach((ruta) => {
+      const nueva = constructores[ruta](config);
+      nueva.hidden = secciones[ruta].hidden;
+      nueva.style.animation = "none"; // sin parpadeo al reemplazarla
+      secciones[ruta].replaceWith(nueva);
+      secciones[ruta] = nueva;
+    });
+  });
 })();

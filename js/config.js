@@ -25,6 +25,14 @@
  *    canciones: "notas", "tren"
  */
 window.JARDIN_CONFIG = {
+  // Planilla de Google donde las seños cargan juegos, canciones y salitas.
+  // Si la planilla responde, la página usa lo que dice ella; si no,
+  // usa las listas de este archivo (juegos, canciones y salas).
+  // La planilla tiene que estar compartida como "Cualquier persona con el enlace".
+  planilla: {
+    id: "1-o1ywrZbFcnN1QYWM9E1c30mcXGkuSXxtiFNh343SNw",
+  },
+
   jardin: {
     // Nombre que aparece arriba de todo y en la pestaña del navegador.
     nombre: "JIN 0-152 Tren Trasandino",
