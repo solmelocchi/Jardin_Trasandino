@@ -67,7 +67,7 @@ window.Jardin = window.Jardin || {};
       contenido: `
         <section class="grupo" aria-label="Canciones">
           <ul class="tarjetas tarjetas--canciones" data-lista="canciones"></ul>
-          <p class="nota-adultos">Para familias y docentes: los videos son de YouTube.</p>
+          <p class="nota-adultos">Para familias y docentes: las canciones están en YouTube y en Google Drive.</p>
         </section>`,
     });
     llenar(seccion, "canciones", config.canciones, Jardin.crearTarjetaCancion);

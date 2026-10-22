@@ -89,13 +89,40 @@ window.Jardin = window.Jardin || {};
     return m ? m[1] : null;
   }
 
+  // Saca el código de un archivo de Google Drive (.../file/d/CODIGO/...).
+  function codigoDrive(url) {
+    const m = String(url || "").match(/\/file\/d\/([A-Za-z0-9_-]{10,})/);
+    return m ? m[1] : null;
+  }
+
+  /*
+   * Tarjeta de canción. Acepta:
+   *   youtube: enlace a un video de YouTube, o
+   *   drive:   enlace a un audio o video guardado en Google Drive,
+   *   letra:   (opcional) enlace al documento con la letra.
+   */
   Jardin.crearTarjetaCancion = function (cancion) {
     const tarjeta = document.createElement("li");
     tarjeta.className = `tarjeta tarjeta--cancion tema-${cancion.color || "amarillo"}`;
-    const valido = Jardin.enlaceValido(cancion.youtube);
-    // YouTube solo deja ver el video dentro de la página cuando el sitio se abre
-    // desde una dirección web (no con doble clic en el archivo): ahí da "Error 153".
-    const codigo = valido && location.protocol !== "file:" ? codigoYoutube(cancion.youtube) : null;
+    const enDrive = !cancion.youtube && !!cancion.drive;
+    const enlace = (enDrive ? cancion.drive : cancion.youtube) || "";
+    const valido = Jardin.enlaceValido(enlace);
+
+    // Dirección para reproducir dentro de la página. YouTube solo lo permite cuando
+    // el sitio se abre desde una dirección web (con doble clic da "Error 153").
+    let incrustado = null;
+    if (valido && enDrive && codigoDrive(enlace)) {
+      incrustado = `https://drive.google.com/file/d/${codigoDrive(enlace)}/preview`;
+    } else if (valido && !enDrive && location.protocol !== "file:" && codigoYoutube(enlace)) {
+      incrustado = `https://www.youtube-nocookie.com/embed/${codigoYoutube(enlace)}?autoplay=1&rel=0`;
+    }
+    const sitio = enDrive ? "Drive" : "YouTube";
+    const nuevaPestana = `<span class="solo-lectores"> (se abre en una pestaña nueva)</span>`;
+    const botonLetra = Jardin.enlaceValido(cancion.letra)
+      ? `<a class="boton boton--suave boton--chico" href="${escapar(cancion.letra.trim())}" target="_blank" rel="noopener">
+           <span>Ver la letra</span>${Jardin.ilustraciones.externo}${nuevaPestana}
+         </a>`
+      : "";
 
     tarjeta.innerHTML = `
       <div class="tarjeta__dibujo tarjeta__pantalla">${Jardin.dibujo(cancion.ilustracion || "notas")}</div>
@@ -105,25 +132,26 @@ window.Jardin = window.Jardin || {};
         !valido
           ? `<p class="tarjeta__texto tarjeta__pronto">${Jardin.ilustraciones.reloj}<span>¡Muy pronto!</span></p>`
           : `<div class="tarjeta__botones">
-               ${codigo ? `<button class="boton boton--tarjeta" type="button">${Jardin.ilustraciones.play}<span>${escapar(cancion.boton || "¡Escuchar!")}</span><span class="solo-lectores">: ${escapar(cancion.titulo)}</span></button>` : ""}
                ${
-                 codigo
-                   ? `<a class="boton boton--suave boton--chico" href="${escapar(cancion.youtube.trim())}" target="_blank" rel="noopener">
-                        <span>Ver en YouTube</span>${Jardin.ilustraciones.externo}<span class="solo-lectores"> (se abre en una pestaña nueva)</span>
+                 incrustado
+                   ? `<button class="boton boton--tarjeta" type="button">${Jardin.ilustraciones.play}<span>${escapar(cancion.boton || "¡Escuchar!")}</span><span class="solo-lectores">: ${escapar(cancion.titulo)}</span></button>
+                      <a class="boton boton--suave boton--chico" href="${escapar(enlace.trim())}" target="_blank" rel="noopener">
+                        <span>Ver en ${sitio}</span>${Jardin.ilustraciones.externo}${nuevaPestana}
                       </a>`
-                   : `<a class="boton boton--tarjeta" href="${escapar(cancion.youtube.trim())}" target="_blank" rel="noopener">
-                        ${Jardin.ilustraciones.play}<span>${escapar(cancion.botonYoutube || "¡Escuchar en YouTube!")}</span><span class="solo-lectores"> (se abre en una pestaña nueva)</span>
+                   : `<a class="boton boton--tarjeta" href="${escapar(enlace.trim())}" target="_blank" rel="noopener">
+                        ${Jardin.ilustraciones.play}<span>${escapar(cancion.botonYoutube || `¡Escuchar en ${sitio}!`)}</span>${nuevaPestana}
                       </a>`
                }
+               ${botonLetra}
              </div>`
       }`;
 
-    // El video recién se carga cuando alguien toca "¡Escuchar!".
+    // El reproductor recién se carga cuando alguien toca "¡Escuchar!".
     const play = tarjeta.querySelector("button");
     const pantalla = tarjeta.querySelector(".tarjeta__pantalla");
     const dibujo = pantalla.innerHTML;
     if (play) {
-      // Al salir de la sección, el video se apaga y vuelve el dibujo.
+      // Al salir de la sección, el reproductor se apaga y vuelve el dibujo.
       videos.push(() => {
         if (!pantalla.classList.contains("tarjeta__pantalla--video")) return;
         pantalla.classList.remove("tarjeta__pantalla--video");
@@ -132,7 +160,7 @@ window.Jardin = window.Jardin || {};
       });
       play.addEventListener("click", () => {
         pantalla.classList.add("tarjeta__pantalla--video");
-        pantalla.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${codigo}?autoplay=1&rel=0" title="Video: ${escapar(cancion.titulo)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+        pantalla.innerHTML = `<iframe src="${incrustado}" title="${escapar(cancion.titulo)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
         play.hidden = true;
         Jardin.voz.callar();
       });

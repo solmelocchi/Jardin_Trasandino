@@ -110,9 +110,10 @@ window.JARDIN_CONFIG = {
     },
   ],
 
-  // ---------- Canciones (videos de YouTube) ----------
-  // Pegá el enlace del video en `youtube`. Se reproduce dentro de la
-  // página al tocar "¡Escuchar!" y también hay un acceso a YouTube.
+  // ---------- Canciones ----------
+  // Cada canción lleva `youtube` (enlace al video) o `drive` (enlace a un
+  // audio de Google Drive). Se reproduce dentro de la página al tocar
+  // "¡Escuchar!". Con `letra` aparece el botón "Ver la letra".
   canciones: [
     {
       titulo: "La tierra tiembla, es un temblor",
@@ -120,6 +121,21 @@ window.JARDIN_CONFIG = {
       color: "amarillo",
       ilustracion: "notas",
       youtube: "https://youtu.be/g_n3uibCq0I?feature=shared",
+    },
+    {
+      titulo: "Su nombre es Atuq (Gato cuyano)",
+      descripcion: "Canción de Leonel Boin",
+      color: "naranja",
+      ilustracion: "notas",
+      youtube: "https://youtu.be/VhTc_26D8Dc?feature=shared",
+    },
+    {
+      titulo: "Canción del jardín (carnavalito)",
+      descripcion: "Canción Tren Trasandino",
+      color: "menta",
+      ilustracion: "tren",
+      drive: "https://drive.google.com/file/d/1_Gx5CEEnIad90XaWnPQ8d-pki--O79Gq/view?usp=drivesdk",
+      letra: "https://docs.google.com/document/d/1Ct4V0eHoImpuDUmL8JGchad2WGy1KFZ0/edit?usp=drivesdk&ouid=101293322830953910470&rtpof=true&sd=true",
     },
   ],
 
