@@ -87,7 +87,9 @@ window.Jardin = window.Jardin || {};
     }
   }
 
-  async function pestana(id, nombre) {
+  // Si la pestaña no existe, Google devuelve la primera (Instrucciones):
+  // por eso se revisa que estén las columnas esperadas.
+  async function pestana(id, nombre, requeridas) {
     const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent(nombre)}`;
     const control = new AbortController();
     const espera = setTimeout(() => control.abort(), 8000);
@@ -96,7 +98,10 @@ window.Jardin = window.Jardin || {};
       const texto = await r.text();
       // Sin permiso, Google devuelve una página de inicio de sesión en vez del CSV.
       if (!r.ok || texto.trim().startsWith("<")) return null;
-      return comoObjetos(leerCsv(texto));
+      const filas = leerCsv(texto);
+      const cabecera = (filas[0] || []).map(normalizar);
+      if (!requeridas.every((r) => cabecera.some((c) => c.startsWith(r)))) return null;
+      return comoObjetos(filas);
     } catch (e) {
       return null;
     } finally {
@@ -111,10 +116,11 @@ window.Jardin = window.Jardin || {};
   Jardin.cargarPlanilla = async function (config) {
     const id = config.planilla && config.planilla.id;
     if (!id) return null;
-    const [juegos, canciones, salas] = await Promise.all([
-      pestana(id, "Juegos"),
-      pestana(id, "Canciones"),
-      pestana(id, "Salitas"),
+    const [juegos, canciones, salas, recomendaciones] = await Promise.all([
+      pestana(id, "Juegos", ["titulo", "enlace"]),
+      pestana(id, "Canciones", ["titulo", "enlace"]),
+      pestana(id, "Salitas", ["nombre"]),
+      pestana(id, "Recomendaciones", ["tipo", "titulo", "enlace"]),
     ]);
     const datos = {};
 
@@ -160,6 +166,39 @@ window.Jardin = window.Jardin || {};
           ilustracion: elegir(valor(f, "dibujo"), DIBUJOS.salas, i),
         }))
         .filter((s) => s.nombre);
+    }
+
+    if (recomendaciones) {
+      // Cada fila es un video o un juego, según la columna "Tipo".
+      datos.recomendaciones = { videos: [], juegos: [] };
+      recomendaciones.forEach((f, i) => {
+        const titulo = valor(f, "titulo");
+        const enlace = valor(f, "enlace");
+        if (!titulo || !Jardin.enlaceValido(enlace)) return;
+        if (normalizar(valor(f, "tipo")).startsWith("juego")) {
+          datos.recomendaciones.juegos.push({
+            titulo,
+            tipo: valor(f, "descripcion") || "Juego",
+            enlace,
+            plataforma: plataforma(enlace),
+            color: elegir(valor(f, "color"), COLORES, i + 2),
+            ilustracion: elegir(valor(f, "dibujo"), DIBUJOS.juegos, i),
+            boton: "¡Jugar!",
+          });
+        } else {
+          const esYoutube = /youtu\.?be/i.test(enlace);
+          datos.recomendaciones.videos.push({
+            titulo,
+            descripcion: valor(f, "descripcion"),
+            youtube: esYoutube ? enlace : "",
+            drive: esYoutube ? "" : enlace,
+            color: elegir(valor(f, "color"), COLORES, i + 3),
+            ilustracion: elegir(valor(f, "dibujo"), DIBUJOS.canciones, i + 1),
+            boton: "¡Ver el video!",
+            botonYoutube: "¡Ver en YouTube!",
+          });
+        }
+      });
     }
 
     return datos;

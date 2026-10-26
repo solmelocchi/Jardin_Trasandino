@@ -74,6 +74,7 @@ window.Jardin = window.Jardin || {};
           <button class="modos__boton" type="button" data-modo="jardin" aria-pressed="false">${ilu.sol}<span>En el jardín</span></button>
           <button class="modos__boton" type="button" data-modo="casa" aria-pressed="false">${ilu.casa}<span>En casa</span></button>
           <button class="modos__boton" type="button" data-modo="video" aria-pressed="false">${ilu.tren}<span>Video: El tren se mueve seguro</span></button>
+          <button class="modos__boton" type="button" data-modo="extras" aria-pressed="false" hidden>${ilu.estrellaLlena}<span>Más videos y juegos</span></button>
         </div>
         <span class="herramientas__voz"></span>
       </div>
@@ -112,6 +113,16 @@ window.Jardin = window.Jardin || {};
 
       <div class="modo" data-panel="jardin" hidden></div>
       <div class="modo" data-panel="casa" hidden></div>
+      <div class="modo" data-panel="extras" hidden>
+        <section class="grupo" aria-labelledby="extras-videos">
+          <h2 class="grupo__titulo" id="extras-videos">Videos</h2>
+          <ul class="tarjetas tarjetas--canciones" data-lista="extras-videos"></ul>
+        </section>
+        <section class="grupo" aria-labelledby="extras-juegos">
+          <h2 class="grupo__titulo" id="extras-juegos">Juegos</h2>
+          <ul class="tarjetas" data-lista="extras-juegos"></ul>
+        </section>
+      </div>
       <div class="modo" data-panel="video" hidden>
         <div class="video-reco">
           <ul class="tarjetas tarjetas--canciones video-reco__video"></ul>
@@ -302,6 +313,22 @@ window.Jardin = window.Jardin || {};
       // Sin video configurado, no se muestra el botón.
       seccion.querySelector('[data-modo="video"]').remove();
     }
+
+    /* ---------------- Más videos y juegos (los cargan las seños en la planilla) ---------------- */
+
+    seccion.cargarExtras = function (extras) {
+      const botonExtras = seccion.querySelector('[data-modo="extras"]');
+      const listaVideos = seccion.querySelector('[data-lista="extras-videos"]');
+      const listaJuegos = seccion.querySelector('[data-lista="extras-juegos"]');
+      listaVideos.innerHTML = "";
+      listaJuegos.innerHTML = "";
+      (extras.videos || []).forEach((v) => listaVideos.appendChild(Jardin.crearTarjetaCancion(v)));
+      (extras.juegos || []).forEach((j) => listaJuegos.appendChild(Jardin.crearTarjetaEnlace(j, "juego")));
+      listaVideos.closest(".grupo").hidden = !listaVideos.children.length;
+      listaJuegos.closest(".grupo").hidden = !listaJuegos.children.length;
+      botonExtras.hidden = !listaVideos.children.length && !listaJuegos.children.length;
+      if (botonExtras.hidden && botonExtras.getAttribute("aria-pressed") === "true") cambiarModo("juego");
+    };
 
     /* ---------------- Pasos: en el jardín y en casa ---------------- */
 

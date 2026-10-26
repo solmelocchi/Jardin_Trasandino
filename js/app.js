@@ -52,6 +52,7 @@
     if (datos.juegos) config.juegos = datos.juegos;
     if (datos.canciones) config.canciones = datos.canciones;
     if (datos.salas) config.salas = datos.salas;
+    if (datos.recomendaciones) secciones.recomendaciones.cargarExtras(datos.recomendaciones);
     Object.keys(constructores).forEach((ruta) => {
       const nueva = constructores[ruta](config);
       nueva.hidden = secciones[ruta].hidden;
